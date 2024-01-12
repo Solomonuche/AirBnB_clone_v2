@@ -30,7 +30,7 @@ def do_pack():
     else:
         return None
 
-@task
+
 def do_deploy(archive_path):
     """ Deploy archive!"""
 
