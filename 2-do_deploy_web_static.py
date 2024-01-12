@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ A module that compress web_static file into an archive"""
 
-from fabric.api import local, run, put, env, cd
+from fabric.api import local, run, put, env, cd, task
 from datetime import datetime
 import os
 
@@ -30,7 +30,7 @@ def do_pack():
     else:
         return None
 
-
+@task
 def do_deploy(archive_path):
     """ Deploy archive!"""
 
