@@ -50,14 +50,14 @@ def do_deploy(archive_path):
     r1 = put(archive_path, '/tmp/')
 
     # extract file on the server
-    r2 = run(f'mkdir -p /data/web_static/releases/{name}')
-    target_folder = f'/data/web_static/releases/{name}'
+    r2 = run(f'mkdir -p /data/web_static/releases/{name}/')
+    target_folder = f'/data/web_static/releases/{name}/'
 
     r3 = run(f'tar -xzf /tmp/{filename} -C {target_folder}')
 
     r4 = run(f'rm -f /tmp/{filename}')
-    r5 = run(f'cp -r {target_folder}/web_static/* {target_folder}')
-    r6 = run(f'rm -rf {target_folder}/web_static')
+    r5 = run(f'cp -r {target_folder}web_static/* {target_folder}')
+    r6 = run(f'rm -rf {target_folder}web_static')
     r7 = run('rm -rf /data/web_static/current')
 
     r8 = run(f'ln -s {target_folder} /data/web_static/current')
