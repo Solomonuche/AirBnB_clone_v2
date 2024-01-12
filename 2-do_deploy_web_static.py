@@ -34,7 +34,7 @@ def do_pack():
 def do_deploy(archive_path):
     """ Deploy archive!"""
 
-    if not archive_path:
+    if not os.path.exists(archive_path):
         return False
 
     # get pathname
