@@ -62,6 +62,8 @@ def do_deploy(archive_path):
 
     r8 = run(f'ln -s {target_folder} /data/web_static/current')
 
+    print('New version deployed!')
+
     results = [r1, r2, r3, r4, r5, r6, r7, r8]
 
     for result in results:
