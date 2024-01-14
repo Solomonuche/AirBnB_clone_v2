@@ -29,6 +29,10 @@ cat << EOF | sed -i '/server_name .*/r /dev/stdin' /etc/nginx/sites-available/de
 	location /hbnb_static {
 		alias /data/web_static/current/;
 	}
+
+	location /data/web_static/current/ {
+		alias /data/web_static/current/;
+	}
 EOF
 
 # Restart nginx
