@@ -11,6 +11,7 @@ def teardown(exception=None):
 
     storage.close()
 
+
 @app.route('/states_list', strict_slashes=False)
 def states():
     """ render list states"""
@@ -19,7 +20,7 @@ def states():
     states = []
     for values in obj.values():
         states.append(values)
-    
+
     return render_template('7-states_list.html', states=states)
 
 
