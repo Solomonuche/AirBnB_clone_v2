@@ -12,6 +12,10 @@ from models.review import Review
 from sqlalchemy import create_engine
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 classes = {
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -24,7 +28,7 @@ class DBStorage:
     defines the dbstorage class methods and attributes
     """
     classes = {
-            'BaseModel': BaseModel, 'User': User,
+            'User': User,
             'Place': Place, 'State': State, 'City': City,
             'Amenity': Amenity, 'Review': Review
             }
@@ -47,26 +51,34 @@ class DBStorage:
 
     def all(self, cls=None):
         """ returns all the objects of the class name cls """
-        session = sessionmaker(bind=self.__engine)
-        self.__session = session()
+        #session = sessionmaker(bind=self.__engine)
+        #self.__session = session()
         objects = {}
         if cls:
-            if cls in classes:
-                obj = self.__session.query(DBStorage.classes[cls]).all()
-                for i in obj:
-                    key = f"{cls}.{i.id}"
-                    objects[key] = i
-                return objects
+            if isinstance(cls, str) and cls in DBStorage.classes:
+                cls = DBStorage.classes[cls]
+
+            if not isinstance(cls, str):
+                # loop through to get key
+                for k, v in DBStorage.classes.items():
+                    if v == cls:
+                        obj_key = k
+
+                query_obj = self.__session.query(cls).all()
+                for obj in query_obj:
+                    key = f"{obj_key}.{obj.id}"
+                    objects[key] = obj
+
+            return objects
         else:
             all_object = {}
-            for key, value in DBStorage.classes.items():
-                objects = {}
-                for obj in self.__session.query(
-                        classes[value.__class__.__name__]).all():
-                    ky = f"{key}.{obj.id}"
-                    objects[ky] = obj
-                all_objects[key] = objects
-            return all_objects
+            for key in DBStorage.classes.keys():
+                obj = self.__session.query(DBStorage.classes[key]).all()
+                if obj:
+                    for i in obj:
+                        obj_key = f"{key}.{i.id}"
+                        all_object[obj_key] = i
+            return all_object
 
     def new(self, obj):
         """adds the object to the current database session"""
@@ -87,3 +99,10 @@ class DBStorage:
         ses_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(ses_factory)
         self.__session = Session
+
+    def close(self):
+        """
+        call remove() method on the private session attribute (self.__session)
+        """
+
+        self.__session.remove()
