@@ -51,8 +51,8 @@ class DBStorage:
 
     def all(self, cls=None):
         """ returns all the objects of the class name cls """
-        #session = sessionmaker(bind=self.__engine)
-        #self.__session = session()
+        # session = sessionmaker(bind=self.__engine)
+        # self.__session = session()
         objects = {}
         if cls:
             if isinstance(cls, str) and cls in DBStorage.classes:
