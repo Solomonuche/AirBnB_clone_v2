@@ -20,9 +20,12 @@ def teardown(exception=None):
 def states(id=None):
     """ render list states"""
 
-    if id:
-        Obj = storage.all(State).get(id)
-        return render_template('9-states.html', Obj=Obj)
+    if id is not None:
+        state_obj = None
+        for obj in storage.all(State).values():
+            if obj.id == id:
+                state_obj = obj
+        return render_template('9-states.html', Obj=state_obj)
     else:
         return render_template(
                 '9-states.html', storage=storage.all(State))
